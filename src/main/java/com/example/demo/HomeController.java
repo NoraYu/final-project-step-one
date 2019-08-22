@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,5 +37,19 @@ public class HomeController {
         messageRepository.save(message);
         return "redirect:/";
     }
+    @RequestMapping("/detail/{id}")
+    public String showMessage(@PathVariable("id") long id, Model model){
+        model.addAttribute("message",messageRepository.findById(id).get());
+        return "show";
+    }
 
+    @RequestMapping("/update/{id}")
+    public String updateItem(@PathVariable("id") long id, Model model){
+        model.addAttribute("message",messageRepository.findById(id).get());
+        return "messageform";}
+
+    @RequestMapping("/delete/{id}")
+    public String deleteItem(@PathVariable("id") long id){
+        messageRepository.deleteById(id);
+        return "redirect:/";}
 }
